@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  books-service:
+    container_name: books-service
+    image: book-collection:0.1
+    build:
+      context: .
+    depends_on: 
+        - books-db
+    ports:
+    - "3030:3030"
+  books-db:
+    container_name: books-db
+    image: mongo:3.6
+    ports: 
+    - "27017:27017"
