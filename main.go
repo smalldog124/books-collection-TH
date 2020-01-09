@@ -4,6 +4,7 @@ import (
 	"crawler/db"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/globalsign/mgo"
 	"github.com/gocolly/colly"
@@ -18,14 +19,34 @@ func main() {
 		DBConnection: DBConnection,
 		Database:     db.Database,
 	}
-	var detail []string
-	c := colly.NewCollector()
 
+	c := colly.NewCollector()
+	for index := 1; index <= 200; index++ {
+		stratTime := time.Now()
+		url := fmt.Sprintf("http://e-service.nlt.go.th/ISBNReq/Detail/%d", index)
+		detail, err := crawler(c, url)
+		if err != nil {
+			log.Println("function crawler: ", err)
+		}
+		book := formatSaveBook(detail)
+		if err = bookMongo.SaveBooks(book); err != nil {
+			log.Println("data base err: ", err)
+		}
+		fmt.Printf("s: %v book: %d\n", time.Since(stratTime), index)
+	}
+	fmt.Println("Yes !!!")
+}
+
+func crawler(c *colly.Collector, url string) ([]string, error) {
+	var detail []string
 	c.OnHTML("input[value]", func(e *colly.HTMLElement) {
 		detail = append(detail, e.Attr("value"))
 
 	})
-	c.Visit("http://e-service.nlt.go.th/ISBNReq/Detail/205789")
+	return detail, c.Visit(url)
+}
+
+func formatSaveBook(detail []string) db.Book {
 	var book db.Book
 	book.Name = detail[0]
 	book.Writer = detail[1]
@@ -35,10 +56,6 @@ func main() {
 	book.NumberOfPage = detail[7]
 	book.ISBNumber = detail[8]
 	book.Publisher = detail[9]
-
-	if err = bookMongo.SaveBooks(book); err != nil {
-		log.Println("data base err: ", err)
-	}
-
-	fmt.Println("Yes !!!")
+	book.Updatated = time.Now()
+	return book
 }
