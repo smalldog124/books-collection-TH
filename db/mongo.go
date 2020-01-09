@@ -16,20 +16,19 @@ type BookMongo struct {
 }
 
 type Book struct {
-	Name      string    `bson:"naem" json:"name"`
-	Writer    string    `bson:"writer" json:"writer"`
-	Publisher string    `bsom:"publisher" json:"publisher"`
-	Updatated time.Time `bson:"updated" json:"updated"`
+	ISBNumber    string    `bson:"ISBNumber" json:"ISBNumber"`
+	Name         string    `bson:"naem" json:"name"`
+	Writer       string    `bson:"writer" json:"writer"`
+	Translator   string    `bson:"translator" json:"translator"`
+	Publisher    string    `bson:"publisher" json:"publisher"`
+	EditionNote  string    `bson:"edition_note" json:"edition_note"`
+	PrintYear    string    `bson:"print_year" json:"print_year"`
+	NumberOfPage string    `bson:"no_of_page" json:"no_of_page"`
+	Updatated    time.Time `bson:"updated" json:"updated"`
 }
 
-func (db BookMongo) SaveBooks(books []Book) error {
-	bulk := db.DBConnection.DB(db.Database).C("detail").Bulk()
-	var err error
-	for _, book := range books {
-		bulk.Insert(book)
-		err = db.DBConnection.DB(db.Database).C("detail").Insert(&book)
-	}
-	return err
+func (db BookMongo) SaveBooks(books Book) error {
+	return db.DBConnection.DB(db.Database).C("detail").Insert(books)
 }
 
 func (db BookMongo) GetBooks() ([]Book, error) {

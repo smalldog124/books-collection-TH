@@ -21,19 +21,16 @@ func Test_Books_Repository(t *testing.T) {
 
 	t.Run("SaveBooks_Input_Books_Should_Be_Success", func(t *testing.T) {
 		mock_date, _ := time.Parse(time.RFC3339, "2020-01-02T15:04:05Z")
-		books := []db.Book{
-			{
-				Name:      "ศึกยุทธหัตถี (ปกแข็ง)",
-				Writer:    "สุภฤกษ์ บุญกอง",
-				Publisher: "บริษัท สกายบุ๊กส์ จำกัด",
-				Updatated: mock_date,
-			},
-			{
-				Name:      "ยิหวายาใจ",
-				Writer:    "แอลลี่",
-				Publisher: "บริษัท มันดี กรุ๊ป จำกัด",
-				Updatated: mock_date,
-			},
+		books := db.Book{
+			ISBNumber:    "978-616-411-106-6",
+			Name:         "ศึกยุทธหัตถี (ปกแข็ง)",
+			Writer:       "สุภฤกษ์ บุญกอง",
+			Translator:   "",
+			Publisher:    "บริษัท สกายบุ๊กส์ จำกัด",
+			EditionNote:  "1",
+			PrintYear:    "2563",
+			NumberOfPage: "192",
+			Updatated:    mock_date,
 		}
 
 		err := bookMongo.SaveBooks(books)
