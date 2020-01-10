@@ -4,6 +4,7 @@ import (
 	"crawler/db"
 	"fmt"
 	"log"
+	"sync"
 	"time"
 
 	"github.com/globalsign/mgo"
@@ -20,30 +21,43 @@ func main() {
 		Database:     db.Database,
 	}
 
+	var detail []db.Book
+	var wg sync.WaitGroup
 	c := colly.NewCollector()
-	for index := 1; index <= 200; index++ {
+	for round := 0; round <= 200; round += 10 {
 		stratTime := time.Now()
-		url := fmt.Sprintf("http://e-service.nlt.go.th/ISBNReq/Detail/%d", index)
-		detail, err := crawler(c, url)
-		if err != nil {
-			log.Println("function crawler: ", err)
-		}
-		book := formatSaveBook(detail)
-		if err = bookMongo.SaveBooks(book); err != nil {
+		wg.Add(1)
+		go visitWebsite(c, round, &wg, detail)
+		wg.Wait()
+
+		if err = bookMongo.SaveBooks(detail); err != nil {
 			log.Println("data base err: ", err)
 		}
-		fmt.Printf("s: %v book: %d\n", time.Since(stratTime), index)
+		fmt.Printf("s: %v book: %d\n", time.Since(stratTime), round)
 	}
 	fmt.Println("Yes !!!")
 }
 
-func crawler(c *colly.Collector, url string) ([]string, error) {
+func visitWebsite(c *colly.Collector, round int, wg *sync.WaitGroup, detail []db.Book) {
+	defer wg.Done()
+	for i := 1; i < 10; i++ {
+		index := (round * 10) + i
+		b := crawler(c, index)
+		detail = append(detail, b)
+	}
+}
+
+func crawler(c *colly.Collector, index int) db.Book {
 	var detail []string
+	url := fmt.Sprintf("http://e-service.nlt.go.th/ISBNReq/Detail/%d", index)
 	c.OnHTML("input[value]", func(e *colly.HTMLElement) {
 		detail = append(detail, e.Attr("value"))
 
 	})
-	return detail, c.Visit(url)
+	if err := c.Visit(url); err != nil {
+		log.Println("function crawler: ", err)
+	}
+	return formatSaveBook(detail)
 }
 
 func formatSaveBook(detail []string) db.Book {
