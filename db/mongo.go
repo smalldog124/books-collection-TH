@@ -27,8 +27,17 @@ type Book struct {
 	Updatated    time.Time `bson:"updated" json:"updated"`
 }
 
-func (db BookMongo) SaveBooks(books Book) error {
+func (db BookMongo) SaveBook(books Book) error {
 	return db.DBConnection.DB(db.Database).C("detail").Insert(books)
+}
+
+func (db BookMongo) SaveBooks(books []Book) error {
+	bulk := db.DBConnection.DB(db.Database).C("detail").Bulk()
+	for _, book := range books {
+		bulk.Insert(book)
+	}
+	_, err := bulk.Run()
+	return err
 }
 
 func (db BookMongo) GetBooks() ([]Book, error) {

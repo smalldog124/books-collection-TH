@@ -3,9 +3,7 @@ version: "3"
 services:
   books-service:
     container_name: books-service
-    image: book-collection:0.1
-    build:
-      context: .
+    image: smalldog124/book-crawler:0.3
     depends_on: 
         - books-db
     ports:
