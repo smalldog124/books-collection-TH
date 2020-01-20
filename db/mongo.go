@@ -34,6 +34,9 @@ func (db BookMongo) SaveBook(books Book) error {
 func (db BookMongo) SaveBooks(books []Book) error {
 	bulk := db.DBConnection.DB(db.Database).C("detail").Bulk()
 	for _, book := range books {
+		if book.ISBNumber == "" {
+			continue
+		}
 		bulk.Insert(book)
 	}
 	_, err := bulk.Run()
