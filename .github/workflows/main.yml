@@ -1,13 +1,6 @@
 name: CI
 
-on:
-  push:
-    branches:
-      - master
-  page_build:
-    release:
-      types:
-        - published
+on: [push]
 
 jobs:
   build:
