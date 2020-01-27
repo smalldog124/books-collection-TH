@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  page_build:
+    release:
+      types:
+        - published
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+    - name: Build back-end image
+      run: |
+        make build_image
+        echo build success
