@@ -10,9 +10,16 @@ services:
     - "3030:3030"
   books-db:
     container_name: books-db
-    image: mongo:3.6
-    ports: 
-    - "27017:27017"
+    image: postgres:11.1-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_USER: smalldoc
+      POSTGRES_DB: books_collection_th
+    ports:
+      - 5432:5432
+    volumes:
+      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
   book-ui:
     container_name: book-ui
     image: smalldog124/book-ui:0.3
