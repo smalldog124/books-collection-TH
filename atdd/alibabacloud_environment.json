@@ -1,0 +1,14 @@
+{
+	"id": "739f3837-c26b-446f-9114-b989e27f3f2d",
+	"name": "alibabacloud",
+	"values": [
+		{
+			"key": "url",
+			"value": "47.88.155.215:3030",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2020-01-27T07:56:07.742Z",
+	"_postman_exported_using": "Postman/7.16.1"
+}

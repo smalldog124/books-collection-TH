@@ -1,0 +1,14 @@
+{
+	"id": "a6ec371e-550d-40d3-97ab-53eaf7ebd290",
+	"name": "book local",
+	"values": [
+		{
+			"key": "url",
+			"value": "localhost:3030",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2020-01-27T07:56:23.587Z",
+	"_postman_exported_using": "Postman/7.16.1"
+}
