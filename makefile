@@ -4,7 +4,7 @@ build : build_crawler build_image build_ui
 build_crawler:
 	CGO_ENABLED=0 GOOS=linux go build -o ./bin/crawler ./main.go
 
-build_image :
+build_backend :
 	docker build -t smalldog124/book-crawler:${version} .
 
 build_ui :
