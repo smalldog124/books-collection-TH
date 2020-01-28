@@ -63,14 +63,16 @@ func main() {
 			log.Println(err)
 			return
 		}
-		bookDetail := BookDetail{
-			ISBNumber:  books[0].ISBN,
-			Name:       books[0].Name,
-			Writer:     books[0].Author,
-			Translator: books[0].Translator,
-			Publisher:  books[0].Publisher,
-			PrintYear:  books[0].PrintYear,
-			Updatated:  books[0].Updated,
+		bookDetail := []BookDetail{
+			{
+				ISBNumber:  books[0].ISBN,
+				Name:       books[0].Name,
+				Writer:     books[0].Author,
+				Translator: books[0].Translator,
+				Publisher:  books[0].Publisher,
+				PrintYear:  books[0].PrintYear,
+				Updatated:  books[0].Updated,
+			},
 		}
 		c.JSON(http.StatusOK, bookDetail)
 	})
