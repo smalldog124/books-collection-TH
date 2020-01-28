@@ -18,8 +18,6 @@ jobs:
 
     - name: Go Lint
       uses: actions-contrib/golangci-lint@v0.1.0
-    
-    - name: Run Lint
       run: golangci-lint run ./cmd/... ./internal/...
 
     - name: Get dependencies
