@@ -5,6 +5,7 @@ CREATE TABLE books (
 		translator     TEXT,
         publisher TEXT,
         print_year TEXT,
+		image_uri TEXT,
 		date_updated TIMESTAMP with time zone DEFAULT now(),
 	
 		PRIMARY KEY (id)
