@@ -31,9 +31,12 @@ func (postgres BookDB) GetAllBooks() ([]Books, error) {
 }
 
 func (postgres BookDB) CreateBook(book Books) error {
-	const query = `INSERT INTO books (id,name,author,translator,publisher,print_year)VALUES($1,$2,$3,$4,$5,$6);`
+	const query = `INSERT INTO books (id,name,author,translator,publisher,print_year)VALUES(:id,:name,:author,:translator,:publisher,:print_year);`
 	tx := postgres.Connection.MustBegin()
-	tx.MustExec(query, book.ISBN, book.Name, book.Author, book.Translator, book.Publisher, book.PrintYear)
+	_, err := tx.NamedExec(query, &book)
+	if err != nil {
+		return err
+	}
 	if err := tx.Commit(); err != nil {
 		return err
 	}
