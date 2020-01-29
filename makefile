@@ -22,3 +22,16 @@ deploy :
 
 crawler :
 	ssh root@47.88.155.215 "cd /root/book-crawler; ./crawler"
+
+test :
+	go test ./cmd/... -cover
+	golangci-lint run ./cmd/... ./internal/...
+	docker-compose up -d books-db
+	go test ./internal/... -cover
+	make build_backend
+	make build_ui
+	sed 's/TAG/${version}/g' docker-compose.template.yml > docker-compose.yml
+	docker-compose up -d
+	newman run atdd/book_contract.json -e atdd/book_local_environment.json
+	docker-compose down -v
+	# docker rmi $(docker image ls --filter "dangling=true" -q)
