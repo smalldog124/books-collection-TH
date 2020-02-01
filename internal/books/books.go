@@ -16,7 +16,7 @@ type BooksInserface interface {
 
 type Books struct {
 	ID         int       `db:"id"`
-	ISBN       string    `db:"ISBN"`
+	ISBN       string    `db:"isbn"`
 	Name       string    `db:"name"`
 	Writer     string    `db:"writer"`
 	Translator string    `db:"translator"`
@@ -27,7 +27,7 @@ type Books struct {
 
 func (postgres BookDB) GetAllBooks() ([]Books, error) {
 	var book []Books
-	const query = `SELECT id,name,writer,translator,publisher,print_year,date_updated FROM books`
+	const query = `SELECT id,isbn,name,writer,translator,publisher,print_year,date_updated FROM books`
 	err := postgres.Connection.Select(&book, query)
 	if err != nil {
 		return book, err
@@ -35,8 +35,18 @@ func (postgres BookDB) GetAllBooks() ([]Books, error) {
 	return book, err
 }
 
+func (postgres BookDB) GetBookBy(isbn string) (Books, error) {
+	var book Books
+	const query = `SELECT id,isbn,name,writer,translator,publisher,print_year,date_updated FROM books WHERE isbn=$1`
+	err := postgres.Connection.Get(&book, query, isbn)
+	if err != nil {
+		return book, err
+	}
+	return book, err
+}
+
 func (postgres BookDB) CreateBook(book Books) error {
-	const query = `INSERT INTO books (id,name,writer,translator,publisher,print_year)VALUES(:id,:name,:writer,:translator,:publisher,:print_year);`
+	const query = `INSERT INTO books (isbn,name,writer,translator,publisher,print_year)VALUES(:isbn,:name,:writer,:translator,:publisher,:print_year);`
 	tx := postgres.Connection.MustBegin()
 	_, err := tx.NamedExec(query, &book)
 	if err != nil {

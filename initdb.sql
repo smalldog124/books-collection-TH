@@ -1,20 +1,38 @@
 CREATE TABLE books (
-		id   TEXT,
+		id   SERIAL PRIMARY KEY,
+		ISBN TEXT,
 		name         TEXT,
-		author         TEXT,
+		writer         TEXT,
 		translator     TEXT,
         publisher TEXT,
         print_year TEXT,
 		image_uri TEXT,
-		date_updated TIMESTAMP with time zone DEFAULT now(),
-	
-		PRIMARY KEY (id)
+		date_updated TIMESTAMP with time zone DEFAULT now()
 );
 
 INSERT INTO books (
-	id,
+	ISBN,
 	name,
-	author,
+	writer,
+	translator,
+	publisher,
+	print_year,
+	date_updated
+	)
+VALUES(
+	'978-616-18-2996-4',
+	'ทำไม Netflix ถึงมีแต่คนโตครเก่ง',
+	'แพตตี้ แมคคอร์ด',
+	'วิกันดา จันทร์ทองสุข',
+	'บริษัทอมรินทร์พริ้นติ้งแอนด์พับลิชซิ่ง จำกัด (มหาชน)',
+	'2558',
+	TIMESTAMP '2020-01-28 09:12:00'
+);
+
+INSERT INTO books (
+	ISBN,
+	name,
+	writer,
 	translator,
 	publisher,
 	print_year,
@@ -28,4 +46,4 @@ VALUES(
 	'สำนักพิมพ์ศูนย์ส่งเสริมอาชีวะ',
 	'2562',
 	TIMESTAMP '2020-01-28 09:12:00'
-	);
+);
