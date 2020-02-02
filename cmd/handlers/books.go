@@ -24,6 +24,12 @@ type BookResponse struct {
 	Updatated    string `json:"updated"`
 }
 
+type AddBookShelfRequest struct {
+	UserID int `json:"user_id"`
+	BookID int `json:"book_id"`
+	Score  int `json:"score"`
+}
+
 func (b BooksAPI) BookScanHandler(constext *gin.Context) {
 	isbn := constext.Param("isbn")
 	book, err := b.Books.GetBookBy(isbn)
@@ -42,4 +48,27 @@ func (b BooksAPI) BookScanHandler(constext *gin.Context) {
 		Updatated:  book.Updated.Format("2006-01-02"),
 	}
 	constext.JSON(http.StatusOK, bookResponse)
+}
+
+func (b BooksAPI) AddBookShelfHandler(constext *gin.Context) {
+	var request AddBookShelfRequest
+	if err := constext.BindJSON(&request); err != nil {
+		constext.String(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	bookShelf := books.BookShelf{
+		UserID: request.UserID,
+		BookID: request.BookID,
+		Score:  request.Score,
+	}
+	bookReviwe := books.BookReviwe{
+		BookID: request.BookID,
+		Score:  request.Score,
+	}
+	if err := b.Books.AddBookShelf(bookShelf, bookReviwe); err != nil {
+		constext.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	constext.Status(http.StatusCreated)
 }

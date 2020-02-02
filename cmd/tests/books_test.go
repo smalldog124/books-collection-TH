@@ -1,9 +1,12 @@
 package test
 
 import (
+	"bytes"
 	"crawler/cmd/handlers"
 	"crawler/internal/books"
+	"encoding/json"
 	"io/ioutil"
+	"net/http"
 	"net/http/httptest"
 	"testing"
 	"time"
@@ -42,4 +45,36 @@ func Test_BookScanHandler_Input_ISBN_978_616_18_2996_4_Shold_Be_Book_ID_1(t *tes
 
 	assert.Equal(t, nil, err)
 	assert.Equal(t, expected, string(actual))
+}
+
+func Test_AddBookShelfHandler_Handler_Input_ISBN_978_616_18_2996_4_Shold_Htpp_Status_200(t *testing.T) {
+	requestBody := handlers.AddBookShelfRequest{
+		UserID: 129494830394,
+		BookID: 1,
+		Score:  4,
+	}
+	jsonRequest, _ := json.Marshal(requestBody)
+	request := httptest.NewRequest("POST", "/api/v1/book/shelf", bytes.NewBuffer(jsonRequest))
+	write := httptest.NewRecorder()
+	bookShelf := books.BookShelf{
+		UserID: 129494830394,
+		BookID: 1,
+		Score:  4,
+	}
+	bookReviwe := books.BookReviwe{
+		BookID: 1,
+		Score:  4,
+	}
+	mockBooksDB := new(mockBooksDB)
+	mockBooksDB.On("AddBookShelf", bookShelf, bookReviwe).Return(nil)
+	booksAPI := handlers.BooksAPI{
+		Books: mockBooksDB,
+	}
+
+	mockRoute := gin.Default()
+	mockRoute.POST("/api/v1/book/shelf", booksAPI.AddBookShelfHandler)
+	mockRoute.ServeHTTP(write, request)
+	response := write.Result()
+
+	assert.Equal(t, http.StatusCreated, response.StatusCode)
 }

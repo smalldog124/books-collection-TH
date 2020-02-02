@@ -12,6 +12,7 @@ type BookDB struct {
 
 type BooksInserface interface {
 	GetBookBy(isbn string) (Books, error)
+	AddBookShelf(bookShelf BookShelf, bookReviwe BookReviwe) error
 }
 
 type Books struct {
@@ -23,6 +24,15 @@ type Books struct {
 	Publisher  string    `db:"publisher"`
 	PrintYear  string    `db:"print_year"`
 	Updated    time.Time `db:"date_updated"`
+}
+type BookShelf struct {
+	UserID int
+	BookID int
+	Score  int
+}
+type BookReviwe struct {
+	BookID int
+	Score  int
 }
 
 func (postgres BookDB) GetAllBooks() ([]Books, error) {
