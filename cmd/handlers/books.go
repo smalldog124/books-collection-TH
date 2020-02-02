@@ -62,11 +62,11 @@ func (b BooksAPI) AddBookShelfHandler(constext *gin.Context) {
 		BookID: request.BookID,
 		Score:  request.Score,
 	}
-	bookReviwe := books.BookReviwe{
+	bookReview := books.BookReview{
 		BookID: request.BookID,
 		Score:  request.Score,
 	}
-	if err := b.Books.AddBookShelf(bookShelf, bookReviwe); err != nil {
+	if err := b.Books.AddBookShelf(bookShelf, bookReview); err != nil {
 		constext.String(http.StatusInternalServerError, err.Error())
 		return
 	}

@@ -61,12 +61,12 @@ func Test_AddBookShelfHandler_Handler_Input_ISBN_978_616_18_2996_4_Shold_Htpp_St
 		BookID: 1,
 		Score:  4,
 	}
-	bookReviwe := books.BookReviwe{
+	bookReview := books.BookReview{
 		BookID: 1,
 		Score:  4,
 	}
 	mockBooksDB := new(mockBooksDB)
-	mockBooksDB.On("AddBookShelf", bookShelf, bookReviwe).Return(nil)
+	mockBooksDB.On("AddBookShelf", bookShelf, bookReview).Return(nil)
 	booksAPI := handlers.BooksAPI{
 		Books: mockBooksDB,
 	}
