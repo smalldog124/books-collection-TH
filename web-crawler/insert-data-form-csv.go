@@ -45,7 +45,7 @@ func main() {
 		bookNew := books.Books{
 			ISBN:       data[0],
 			Name:       data[1],
-			Author:     data[2],
+			Writer:     data[2],
 			Translator: data[3],
 			Publisher:  data[4],
 			PrintYear:  data[5],
