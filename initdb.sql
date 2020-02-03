@@ -10,6 +10,20 @@ CREATE TABLE books (
 		date_updated TIMESTAMP with time zone DEFAULT now()
 );
 
+CREATE TABLE shelf (
+	id SERIAL PRIMARY KEY,
+	user_id integer,
+	book_id integer,
+	score integer,
+	date_created TIMESTAMP with time zone DEFAULT now()
+);
+
+CREATE TABLE review (
+	book_id integer,
+	score integer,
+	date_created TIMESTAMP with time zone DEFAULT now()
+);
+
 INSERT INTO books (
 	ISBN,
 	name,
