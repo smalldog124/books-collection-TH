@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"crawler/internal/books"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -54,6 +55,7 @@ func (b BooksAPI) AddBookShelfHandler(constext *gin.Context) {
 	var request AddBookShelfRequest
 	if err := constext.BindJSON(&request); err != nil {
 		constext.String(http.StatusBadRequest, err.Error())
+		log.Printf("bad request %s", err.Error())
 		return
 	}
 
@@ -68,6 +70,7 @@ func (b BooksAPI) AddBookShelfHandler(constext *gin.Context) {
 	}
 	if err := b.Books.AddBookShelf(bookShelf, bookReview); err != nil {
 		constext.String(http.StatusInternalServerError, err.Error())
+		log.Printf("internal AddBookShelf %s", err.Error())
 		return
 	}
 	constext.Status(http.StatusCreated)

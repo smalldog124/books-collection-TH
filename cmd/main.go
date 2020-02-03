@@ -69,5 +69,6 @@ func main() {
 		c.JSON(http.StatusOK, bookDetail)
 	})
 	engine.GET("/api/v1/scan/:isbn", booksAPI.BookScanHandler)
+	engine.POST("/api/v1/book/shelf", booksAPI.AddBookShelfHandler)
 	log.Fatal(engine.Run(fmt.Sprintf(":%s", port)))
 }
