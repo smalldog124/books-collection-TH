@@ -19,3 +19,8 @@ func (b *mockBooksDB) AddBookShelf(bookShelf books.BookShelf, bookReview books.B
 	argument := b.Called(mock.Anything, mock.Anything)
 	return argument.Error(0)
 }
+
+func (b *mockBooksDB) AddBookWishList(bookWishList books.BookWishList) error {
+	argument := b.Called(mock.Anything)
+	return argument.Error(0)
+}

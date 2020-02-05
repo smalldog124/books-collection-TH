@@ -47,7 +47,7 @@ func Test_BookScanHandler_Input_ISBN_978_616_18_2996_4_Shold_Be_Book_ID_1(t *tes
 	assert.Equal(t, expected, string(actual))
 }
 
-func Test_AddBookShelfHandler_Handler_Input_ISBN_978_616_18_2996_4_Shold_Htpp_Status_200(t *testing.T) {
+func Test_AddBookShelfHandler_Handler_Input_ISBN_978_616_18_2996_4_Shold_Htpp_Status_201(t *testing.T) {
 	requestBody := handlers.AddBookShelfRequest{
 		UserID: 129494830394,
 		BookID: 1,
@@ -73,6 +73,32 @@ func Test_AddBookShelfHandler_Handler_Input_ISBN_978_616_18_2996_4_Shold_Htpp_St
 
 	mockRoute := gin.Default()
 	mockRoute.POST("/api/v1/book/shelf", booksAPI.AddBookShelfHandler)
+	mockRoute.ServeHTTP(write, request)
+	response := write.Result()
+
+	assert.Equal(t, http.StatusCreated, response.StatusCode)
+}
+
+func Test_AddBookWishListHandler_Handler_Input_Book_ID_1_And_User_ID_129494830394_Shold_Htpp_Status_201(t *testing.T) {
+	requestBody := handlers.AddBookWishListRequest{
+		UserID: 129494830394,
+		BookID: 1,
+	}
+	jsonRequest, _ := json.Marshal(requestBody)
+	request := httptest.NewRequest("POST", "/api/v1/book/wishlist", bytes.NewBuffer(jsonRequest))
+	write := httptest.NewRecorder()
+	bookWishList := books.BookWishList{
+		UserID: 129494830394,
+		BookID: 1,
+	}
+	mockBooksDB := new(mockBooksDB)
+	mockBooksDB.On("AddBookWishList", bookWishList).Return(nil)
+	booksAPI := handlers.BooksAPI{
+		Books: mockBooksDB,
+	}
+
+	mockRoute := gin.Default()
+	mockRoute.POST("/api/v1/book/wishlist", booksAPI.AddBookWishListHandler)
 	mockRoute.ServeHTTP(write, request)
 	response := write.Result()
 

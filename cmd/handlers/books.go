@@ -31,11 +31,16 @@ type AddBookShelfRequest struct {
 	Score  int `json:"score"`
 }
 
-func (b BooksAPI) BookScanHandler(constext *gin.Context) {
-	isbn := constext.Param("isbn")
+type AddBookWishListRequest struct {
+	UserID int `json:"user_id"`
+	BookID int `json:"book_id"`
+}
+
+func (b BooksAPI) BookScanHandler(context *gin.Context) {
+	isbn := context.Param("isbn")
 	book, err := b.Books.GetBookBy(isbn)
 	if err != nil {
-		constext.String(http.StatusInternalServerError, err.Error())
+		context.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 	bookResponse := BookResponse{
@@ -48,13 +53,13 @@ func (b BooksAPI) BookScanHandler(constext *gin.Context) {
 		PrintYear:  book.PrintYear,
 		Updatated:  book.Updated.Format("2006-01-02"),
 	}
-	constext.JSON(http.StatusOK, bookResponse)
+	context.JSON(http.StatusOK, bookResponse)
 }
 
-func (b BooksAPI) AddBookShelfHandler(constext *gin.Context) {
+func (b BooksAPI) AddBookShelfHandler(context *gin.Context) {
 	var request AddBookShelfRequest
-	if err := constext.BindJSON(&request); err != nil {
-		constext.String(http.StatusBadRequest, err.Error())
+	if err := context.BindJSON(&request); err != nil {
+		context.String(http.StatusBadRequest, err.Error())
 		log.Printf("bad request %s", err.Error())
 		return
 	}
@@ -69,9 +74,28 @@ func (b BooksAPI) AddBookShelfHandler(constext *gin.Context) {
 		Score:  request.Score,
 	}
 	if err := b.Books.AddBookShelf(bookShelf, bookReview); err != nil {
-		constext.String(http.StatusInternalServerError, err.Error())
+		context.String(http.StatusInternalServerError, err.Error())
 		log.Printf("internal AddBookShelf %s", err.Error())
 		return
 	}
-	constext.Status(http.StatusCreated)
+	context.Status(http.StatusCreated)
+}
+
+func (b BooksAPI) AddBookWishListHandler(context *gin.Context) {
+	var request AddBookWishListRequest
+	if err := context.BindJSON(&request); err != nil {
+		context.String(http.StatusBadRequest, err.Error())
+		log.Printf("AddBookWishListHandler bad request %s", err.Error())
+		return
+	}
+	bookWishList := books.BookWishList{
+		UserID: request.BookID,
+		BookID: request.UserID,
+	}
+	if err := b.Books.AddBookWishList(bookWishList); err != nil {
+		context.String(http.StatusInternalServerError, err.Error())
+		log.Printf("internal AddBookShelf %s", err.Error())
+		return
+	}
+	context.Status(http.StatusCreated)
 }
