@@ -95,7 +95,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"user_id\": \"{{user_id}}\",\n    \"book_id\": {{book_id}},\n    \"score\": {{score}}\n}",
+					"raw": "{\n    \"user_id\": {{user_id}},\n    \"book_id\": {{book_id}},\n    \"score\": {{score}}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
