@@ -18,6 +18,12 @@ CREATE TABLE shelf (
 	date_created TIMESTAMP with time zone DEFAULT now()
 );
 
+CREATE TABLE wish_list (
+	book_id integer,
+	user_id integer,
+	date_created TIMESTAMP with time zone DEFAULT now()
+);
+
 CREATE TABLE review (
 	book_id integer,
 	score integer,
