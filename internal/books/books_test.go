@@ -76,7 +76,7 @@ func TestPostgres(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	})
 	t.Run("AddBookShelf_Input_Book_Shelf_And_Book_Review_Should_Be_Ceated", func(t *testing.T) {
-		book_shelf := books.BookShelf{
+		book_shelf := books.Shelf{
 			UserID: 137499732,
 			BookID: 1,
 			Score:  4,
