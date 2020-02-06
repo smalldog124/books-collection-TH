@@ -90,4 +90,14 @@ func TestPostgres(t *testing.T) {
 
 		assert.Equal(t, nil, actual)
 	})
+	t.Run("AddBookWishList_Input_Book_ID_1_And_User_ID_137499732_Should_Be_Ceated", func(t *testing.T) {
+		book_wishlist := books.BookWishList{
+			UserID: 137499732,
+			BookID: 1,
+		}
+
+		actual := postgresDB.AddBookWishList(book_wishlist)
+
+		assert.Equal(t, nil, actual)
+	})
 }

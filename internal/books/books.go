@@ -90,3 +90,13 @@ func (postgres BookDB) AddBookShelf(bookShelf BookShelf, bookReview BookReview) 
 	}
 	return nil
 }
+
+func (postgres BookDB) AddBookWishList(bookWishList BookWishList) error {
+	const queryWishList = `INSERT INTO wish_list (user_id,book_id) VALUES (:user_id,:book_id)`
+	tx := postgres.Connection.MustBegin()
+	_, err := tx.NamedExec(queryWishList, &bookWishList)
+	if err != nil {
+		return err
+	}
+	return nil
+}
