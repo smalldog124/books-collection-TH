@@ -41,13 +41,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/api/v1/wishlist",
+					"raw": "{{url}}/api/v1/book/wishlist",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
 						"v1",
+						"book",
 						"wishlist"
 					]
 				}
