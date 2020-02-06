@@ -70,5 +70,6 @@ func main() {
 	})
 	engine.GET("/api/v1/scan/:isbn", booksAPI.BookScanHandler)
 	engine.POST("/api/v1/book/shelf", booksAPI.AddBookShelfHandler)
+	engine.POST("/api/v1/book/wishlist", booksAPI.AddBookWishListHandler)
 	log.Fatal(engine.Run(fmt.Sprintf(":%s", port)))
 }
