@@ -15,7 +15,12 @@ func (b *mockBooksDB) GetBookBy(isbn string) (books.Books, error) {
 	return argument.Get(0).(books.Books), argument.Error(1)
 }
 
-func (b *mockBooksDB) AddBookShelf(bookShelf books.BookShelf, bookReview books.BookReview) error {
+func (b *mockBooksDB) GetBookCollectionBy(userID string) (books.BooksCollection, error) {
+	argument := b.Called(userID)
+	return argument.Get(0).(books.BooksCollection), argument.Error(1)
+}
+
+func (b *mockBooksDB) AddBookShelf(bookShelf books.Shelf, bookReview books.BookReview) error {
 	argument := b.Called(mock.Anything, mock.Anything)
 	return argument.Error(0)
 }

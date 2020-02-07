@@ -14,6 +14,7 @@ type BooksInserface interface {
 	GetBookBy(isbn string) (Books, error)
 	AddBookShelf(bookShelf Shelf, bookReview BookReview) error
 	AddBookWishList(bookWishList BookWishList) error
+	GetBookCollectionBy(userID string) (BooksCollection, error)
 }
 
 type Books struct {
@@ -25,6 +26,22 @@ type Books struct {
 	Publisher  string    `db:"publisher"`
 	PrintYear  string    `db:"print_year"`
 	Updated    time.Time `db:"date_updated"`
+}
+
+type BooksCollection struct {
+	BooksSelf     []BooksShelf
+	BooksWishList []Books
+}
+type BooksShelf struct {
+	ID         int       `db:"id"`
+	ISBN       string    `db:"isbn"`
+	Name       string    `db:"name"`
+	Writer     string    `db:"writer"`
+	Translator string    `db:"translator"`
+	Publisher  string    `db:"publisher"`
+	PrintYear  string    `db:"print_year"`
+	Updated    time.Time `db:"date_updated"`
+	Score      int       `db:"score"`
 }
 type Shelf struct {
 	UserID int `db:"user_id"`

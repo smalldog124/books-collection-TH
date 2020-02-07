@@ -36,6 +36,23 @@ type AddBookWishListRequest struct {
 	BookID int `json:"book_id"`
 }
 
+type BooksCollection struct {
+	BooksShelf    []BooksShelfResponse `json:"shelf"`
+	BooksWishList []BookResponse       `json:"wishlist"`
+}
+
+type BooksShelfResponse struct {
+	ID          int    `json:"id"`
+	ISBN        string `json:"isbn"`
+	Name        string `json:"name"`
+	Writer      string `json:"writer"`
+	Translator  string `json:"translator"`
+	Publisher   string `json:"publisher"`
+	EditionNote string `json:"edition_note"`
+	PrintYear   string `json:"print_year"`
+	Score       int    `json:"score"`
+}
+
 func (b BooksAPI) BookScanHandler(context *gin.Context) {
 	isbn := context.Param("isbn")
 	book, err := b.Books.GetBookBy(isbn)
@@ -64,7 +81,7 @@ func (b BooksAPI) AddBookShelfHandler(context *gin.Context) {
 		return
 	}
 
-	bookShelf := books.BookShelf{
+	bookShelf := books.Shelf{
 		UserID: request.UserID,
 		BookID: request.BookID,
 		Score:  request.Score,
@@ -98,4 +115,46 @@ func (b BooksAPI) AddBookWishListHandler(context *gin.Context) {
 		return
 	}
 	context.Status(http.StatusCreated)
+}
+
+func (b BooksAPI) CollectionHandler(context *gin.Context) {
+	user_id := context.Param("user_id")
+	booksCollection, err := b.Books.GetBookCollectionBy(user_id)
+	if err != nil {
+		context.String(http.StatusBadRequest, err.Error())
+		log.Printf("collectionHandler bas request: %s", err.Error())
+	}
+	var booksShelf []BooksShelfResponse
+	for _, book := range booksCollection.BooksSelf {
+		bookShelf := BooksShelfResponse{
+			ID:         book.ID,
+			ISBN:       book.ISBN,
+			Name:       book.Name,
+			Writer:     book.Writer,
+			Translator: book.Translator,
+			Publisher:  book.Publisher,
+			PrintYear:  book.PrintYear,
+			Score:      book.Score,
+		}
+		booksShelf = append(booksShelf, bookShelf)
+	}
+
+	var booksWishList []BookResponse
+	for _, book := range booksCollection.BooksWishList {
+		bookWishList := BookResponse{
+			ID:         book.ID,
+			ISBN:       book.ISBN,
+			Name:       book.Name,
+			Writer:     book.Writer,
+			Translator: book.Translator,
+			Publisher:  book.Publisher,
+			PrintYear:  book.PrintYear,
+			Updatated:  book.Updated.Format("2006-01-02"),
+		}
+		booksWishList = append(booksWishList, bookWishList)
+	}
+	context.JSON(http.StatusOK, BooksCollection{
+		BooksShelf:    booksShelf,
+		BooksWishList: booksWishList,
+	})
 }
