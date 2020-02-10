@@ -71,5 +71,6 @@ func main() {
 	engine.GET("/api/v1/scan/:isbn", booksAPI.BookScanHandler)
 	engine.POST("/api/v1/book/shelf", booksAPI.AddBookShelfHandler)
 	engine.POST("/api/v1/book/wishlist", booksAPI.AddBookWishListHandler)
+	engine.GET("/api/v1/collection/:user_id", booksAPI.CollectionHandler)
 	log.Fatal(engine.Run(fmt.Sprintf(":%s", port)))
 }
