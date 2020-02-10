@@ -67,3 +67,14 @@ VALUES(
 	'2562',
 	TIMESTAMP '2020-01-28 09:12:00'
 );
+
+INSERT INTO wish_list (
+	book_id,
+	user_id,
+	date_created
+	)
+VALUES(
+	2,
+	137499732,
+	TIMESTAMP '2020-01-28 09:12:00'
+);

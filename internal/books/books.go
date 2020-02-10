@@ -117,3 +117,26 @@ func (postgres BookDB) AddBookWishList(bookWishList BookWishList) error {
 	}
 	return nil
 }
+
+func (postgres BookDB) GetBookCollectionBy(userID string) (BooksCollection, error) {
+	var booksCollection BooksCollection
+	const queryShelf = `SELECT books.id,isbn,name,writer,translator,publisher,print_year,date_updated,score 
+	FROM books
+	LEFT JOIN shelf
+	ON books.id = shelf.book_id
+	WHERE shelf.user_id=$1`
+	var shelf []BooksShelf
+	if err := postgres.Connection.Select(&shelf, queryShelf, userID); err != nil {
+		return booksCollection, err
+	}
+	const queryWishList = `SELECT books.id,isbn,name,writer,translator,publisher,print_year,date_updated 
+	FROM books
+	LEFT JOIN wish_list
+	ON books.id = wish_list.book_id
+	WHERE wish_list.user_id=$1`
+	var wishList []Books
+	if err := postgres.Connection.Select(&wishList, queryWishList, userID); err != nil {
+		return booksCollection, err
+	}
+	return BooksCollection{BooksSelf: shelf, BooksWishList: wishList}, nil
+}
