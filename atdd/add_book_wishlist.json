@@ -54,6 +54,50 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "get book collection",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e3950236-826f-47f4-99b9-92aa56904c28",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var book = pm.response.json();",
+							"",
+							"pm.test(\"book shelf frist name is\" +data[\"assert\"][\"shelf_name\"], function () {",
+							"     pm.expect(book.shelf[0].name).to.eql(data[\"assert\"][\"shelf_name\"]);",
+							"});",
+							"",
+							"pm.test(\"book withlist frist name is\" +data[\"assert\"][\"wishlist_name\"], function () {",
+							"     pm.expect(book.wishlist[0].name).to.eql(data[\"assert\"][\"wishlist_name\"]);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/collection/{{user_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"collection",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
