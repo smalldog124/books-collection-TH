@@ -15,10 +15,13 @@ push_image :
 	docker push smalldog124/book-ui:${version}
 
 deploy :
-	scp ./bin/crawler root@47.88.155.215:/root/book-crawler
+	# scp ./bin/crawler root@47.88.155.215:/root/book-crawler
+	scp -i lek.pem ./initdb.sql root@47.88.155.215:/root/book-crawler
 	sed 's/TAG/${version}/g' docker-compose.template.yml > docker-compose.yml
-	scp ./docker-compose.yml root@47.88.155.215:/root/book-crawler
-	ssh root@47.88.155.215 "cd /root/book-crawler; docker-compose pull; docker-compose up -d"
+	scp -i lek.pem ./docker-compose.yml root@47.88.155.215:/root/book-crawler
+	ssh -i lek.pem root@47.88.155.215 "cd /root/book-crawler; docker-compose pull; docker-compose up -d"
+	newman run atdd/add_book_collection.json -e atdd/alibabacloud_environment.json -d atdd/data/add_book.json
+	ssh -i lek.pem root@47.88.155.215 "cd /root/book-crawler; docker-compose down -v; docker-compose up -d"
 
 crawler :
 	ssh root@47.88.155.215 "cd /root/book-crawler; ./crawler"
@@ -32,6 +35,18 @@ test :
 	make build_ui
 	sed 's/TAG/${version}/g' docker-compose.template.yml > docker-compose.yml
 	docker-compose up -d
-	newman run atdd/book_contract.json -e atdd/book_local_environment.json
+	newman run atdd/add_book_collection.json -e atdd/book_local_environment.json -d atdd/data/add_book.json 
+	newman run atdd/add_book_wishlist.json -e atdd/book_local_environment.json -d atdd/data/add_wishlist.json 
 	docker-compose down -v
 	# docker rmi $(docker image ls --filter "dangling=true" -q)
+
+integration_test:
+	docker-compose up -d books-db
+	go test ./internal/books
+	docker-compose down -v
+
+test_local:
+	docker-compose up -d
+	newman run atdd/add_book_collection.json -e atdd/book_local_environment.json -d atdd/data/add_book.json 
+	newman run atdd/add_book_wishlist.json -e atdd/book_local_environment.json -d atdd/data/add_wishlist.json 
+	docker-compose down -v
