@@ -32,7 +32,7 @@ func TestPostgres(t *testing.T) {
 		expected := []books.Books{
 			{
 				ID:         1,
-				ISBN:       "978-616-18-2996-4",
+				ISBN:       "9786161829964",
 				Name:       "ทำไม Netflix ถึงมีแต่คนโตครเก่ง",
 				Writer:     "แพตตี้ แมคคอร์ด",
 				Translator: "วิกันดา จันทร์ทองสุข",
@@ -42,7 +42,7 @@ func TestPostgres(t *testing.T) {
 			},
 			{
 				ID:         2,
-				ISBN:       "978-616-553-903-6",
+				ISBN:       "9786165539036",
 				Name:       "อินเทอร์เน็ตเพื่องานธุรกิจ",
 				Writer:     "สุนทรีย์ โพธิ์อิ่ม, ไมตรี ฉลาดธรรม",
 				Translator: "",
@@ -61,7 +61,7 @@ func TestPostgres(t *testing.T) {
 		mockTime := time.Date(2020, 01, 28, 9, 12, 00, 00, time.UTC)
 		expected := books.Books{
 			ID:         1,
-			ISBN:       "978-616-18-2996-4",
+			ISBN:       "9786161829964",
 			Name:       "ทำไม Netflix ถึงมีแต่คนโตครเก่ง",
 			Writer:     "แพตตี้ แมคคอร์ด",
 			Translator: "วิกันดา จันทร์ทองสุข",
@@ -70,7 +70,7 @@ func TestPostgres(t *testing.T) {
 			Updated:    mockTime,
 		}
 
-		actual, err := postgresDB.GetBookBy("978-616-18-2996-4")
+		actual, err := postgresDB.GetBookBy("9786161829964")
 
 		assert.Equal(t, nil, err)
 		assert.Equal(t, expected, actual)
@@ -106,7 +106,7 @@ func TestPostgres(t *testing.T) {
 			BooksSelf: []books.BooksShelf{
 				{
 					ID:         1,
-					ISBN:       "978-616-18-2996-4",
+					ISBN:       "9786161829964",
 					Name:       "ทำไม Netflix ถึงมีแต่คนโตครเก่ง",
 					Writer:     "แพตตี้ แมคคอร์ด",
 					Translator: "วิกันดา จันทร์ทองสุข",
@@ -119,7 +119,7 @@ func TestPostgres(t *testing.T) {
 			BooksWishList: []books.Books{
 				{
 					ID:        2,
-					ISBN:      "978-616-553-903-6",
+					ISBN:      "9786165539036",
 					Name:      "อินเทอร์เน็ตเพื่องานธุรกิจ",
 					Writer:    "สุนทรีย์ โพธิ์อิ่ม, ไมตรี ฉลาดธรรม",
 					Publisher: "สำนักพิมพ์ศูนย์ส่งเสริมอาชีวะ",

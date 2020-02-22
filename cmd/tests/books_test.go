@@ -16,16 +16,16 @@ import (
 )
 
 func Test_BookScanHandler_Input_ISBN_978_616_18_2996_4_Shold_Be_Book_ID_1(t *testing.T) {
-	expected := `{"id":1,"isbn":"978-616-18-2996-4","name":"ทำไม Netflix ถึงมีแต่คนโตครเก่ง","writer":"แพตตี้ แมคคอร์ด","translator":"วิกันดา จันทร์ทองสุข","publisher":"บริษัทอมรินทร์พริ้นติ้งแอนด์พับลิชซิ่ง จำกัด (มหาชน)","edition_note":"","print_year":"2558","no_of_page":"","updated":"2020-01-28"}
+	expected := `{"id":1,"isbn":"9786161829964","name":"ทำไม Netflix ถึงมีแต่คนโตครเก่ง","writer":"แพตตี้ แมคคอร์ด","translator":"วิกันดา จันทร์ทองสุข","publisher":"บริษัทอมรินทร์พริ้นติ้งแอนด์พับลิชซิ่ง จำกัด (มหาชน)","edition_note":"","print_year":"2558","no_of_page":"","updated":"2020-01-28"}
 `
-	isbn := "978-616-18-2996-4"
-	request := httptest.NewRequest("GET", "/api/v1/scan/978-616-18-2996-4", nil)
+	isbn := "9786161829964"
+	request := httptest.NewRequest("GET", "/api/v1/scan/9786161829964", nil)
 	write := httptest.NewRecorder()
 	mockTime := time.Date(2020, 01, 28, 9, 12, 00, 00, time.UTC)
 	mockBooksDB := new(mockBooksDB)
 	mockBooksDB.On("GetBookBy", isbn).Return(books.Books{
 		ID:         1,
-		ISBN:       "978-616-18-2996-4",
+		ISBN:       "9786161829964",
 		Name:       "ทำไม Netflix ถึงมีแต่คนโตครเก่ง",
 		Writer:     "แพตตี้ แมคคอร์ด",
 		Translator: "วิกันดา จันทร์ทองสุข",
@@ -48,7 +48,7 @@ func Test_BookScanHandler_Input_ISBN_978_616_18_2996_4_Shold_Be_Book_ID_1(t *tes
 }
 
 func Test_CollectionHandler_Input_User_ID_137499732_Shold_Be_Book_Shelf_1_And_Whislist_1(t *testing.T) {
-	expected := `{"shelf":[{"id":1,"isbn":"978-616-18-2996-4","name":"ทำไม Netflix ถึงมีแต่คนโตครเก่ง","writer":"แพตตี้ แมคคอร์ด","translator":"วิกันดา จันทร์ทองสุข","publisher":"บริษัทอมรินทร์พริ้นติ้งแอนด์พับลิชซิ่ง จำกัด (มหาชน)","edition_note":"","print_year":"2558","score":4}],"wishlist":[{"id":2,"isbn":"978-616-553-903-6","name":"อินเทอร์เน็ตเพื่องานธุรกิจ","writer":"สุนทรีย์ โพธิ์อิ่ม, ไมตรี ฉลาดธรรม","translator":"","publisher":"สำนักพิมพ์ศูนย์ส่งเสริมอาชีวะ","edition_note":"","print_year":"2562","no_of_page":"","updated":"2020-01-28"}]}
+	expected := `{"shelf":[{"id":1,"isbn":"9786161829964","name":"ทำไม Netflix ถึงมีแต่คนโตครเก่ง","writer":"แพตตี้ แมคคอร์ด","translator":"วิกันดา จันทร์ทองสุข","publisher":"บริษัทอมรินทร์พริ้นติ้งแอนด์พับลิชซิ่ง จำกัด (มหาชน)","edition_note":"","print_year":"2558","score":4}],"wishlist":[{"id":2,"isbn":"9786165539036","name":"อินเทอร์เน็ตเพื่องานธุรกิจ","writer":"สุนทรีย์ โพธิ์อิ่ม, ไมตรี ฉลาดธรรม","translator":"","publisher":"สำนักพิมพ์ศูนย์ส่งเสริมอาชีวะ","edition_note":"","print_year":"2562","no_of_page":"","updated":"2020-01-28"}]}
 `
 	UserID := "137499732"
 	request := httptest.NewRequest("GET", "/api/v1/collection/137499732", nil)
@@ -59,7 +59,7 @@ func Test_CollectionHandler_Input_User_ID_137499732_Shold_Be_Book_Shelf_1_And_Wh
 		BooksSelf: []books.BooksShelf{
 			{
 				ID:         1,
-				ISBN:       "978-616-18-2996-4",
+				ISBN:       "9786161829964",
 				Name:       "ทำไม Netflix ถึงมีแต่คนโตครเก่ง",
 				Writer:     "แพตตี้ แมคคอร์ด",
 				Translator: "วิกันดา จันทร์ทองสุข",
@@ -72,7 +72,7 @@ func Test_CollectionHandler_Input_User_ID_137499732_Shold_Be_Book_Shelf_1_And_Wh
 		BooksWishList: []books.Books{
 			{
 				ID:         2,
-				ISBN:       "978-616-553-903-6",
+				ISBN:       "9786165539036",
 				Name:       "อินเทอร์เน็ตเพื่องานธุรกิจ",
 				Writer:     "สุนทรีย์ โพธิ์อิ่ม, ไมตรี ฉลาดธรรม",
 				Translator: "",
