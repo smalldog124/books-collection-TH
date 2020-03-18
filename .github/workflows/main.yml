@@ -16,7 +16,9 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
 
-    - name: Install Go lint
+    - name: Run golint
       run: |
-        go get https://github.com/golangci/golangci-lint
-        golangci-lint ./cmd/... ./internal/...
+        export PATH=$PATH:$(go env GOPATH)/bin
+        go get -u golang.org/x/lint/golint 
+        golint -set_exit_status github.com/smalldog124/books-collection-TH/cmd
+        golint -set_exit_status github.com/smalldog124/books-collection-TH/internal
