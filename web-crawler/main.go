@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crawler/db"
 	"fmt"
 	"log"
 	_ "net/http/pprof"
