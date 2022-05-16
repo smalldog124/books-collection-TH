@@ -7,7 +7,7 @@ require (
 	github.com/antchfx/htmlquery v1.2.1 // indirect
 	github.com/antchfx/xmlquery v1.2.2 // indirect
 	github.com/antchfx/xpath v1.1.3 // indirect
-	github.com/gin-gonic/gin v1.5.0
+	github.com/gin-gonic/gin v1.7.0
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gocolly/colly v1.2.0
